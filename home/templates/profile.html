@@ -1,0 +1,88 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block navbar %}
+{% include "navbar.html" with first_name=request.user.first_name %}
+{% endblock navbar %}
+
+{% block content %}
+    <section class="w-100 px-4 py-5" style=" border-radius: .5rem .5rem 0 0;">
+        <div class="row d-flex justify-content-center">
+          <div class="col col-md-9 col-lg-9 col-xl-9">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body p-4">
+                <div id= "message-container">
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-primary" role="alert">
+                        {{ message }}
+                      </div>
+                    {% endfor %}
+            {% endif %}
+            </div>
+                <div class="d-flex">
+                  <div class="flex-shrink-0 col-3">
+                    <img src="{% static "img/OIP.jpeg" %}"
+                      alt="Generic placeholder image" class="img-fluid" style="width: 250px; border-radius: 10px;">
+                      <div class="text-center">
+                        <a href="/change-password" class="btn btn-primary flex-grow-1">Change Password</a>
+                      </div>
+                  </div>
+                  <div class="flex-grow-1 ms-3 my-4">
+                    <h5 class="mb-1">{{user.first_name}} {{user.last_name}}</h5>
+                    <p class="mb-2 pb-1">@{{user.username}}</p>
+                    <p class="mb-2 pb-1">Email: {{user.email}}</p>
+                    <p class="mb-2 pb-1">Role: {% if user.isAdmin %}Admin {% else %}General User{% endif %}</p>
+                    <p class="mb-2 pb-1">About you: {{user.user_description}}</p>
+                    <div class="d-flex pt-1">
+                      <a class="btn btn-outline-primary me-1 flex-grow-1" href="/update_account/{{user.username}}">Update Profile</a>
+                      <a href="/delete_account/{{user.username}}" class="btn btn-danger flex-grow-1"  onclick="return confirm('Are you sure you want to delete your account?');">Delete Account</a>
+                    </div>
+                    <hr>
+                    <div class="mt-4">
+                      <h4>Your Sent messages to us </h4>
+                      {% if queries %}
+                      {% for query in queries %}
+                        <div class="card mt-2">
+                          <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                              <h5 class="card-title mb-0">Title: {{query.title}}</h5>
+                              <small class="text-muted">{{query.created_at}}</small>
+                            </div>
+                            <p class="card-text mt-2"><b>Description: </b>{{query.description }}</p>
+                            <p class="card-text mt-2"><b>Current status: </b>{{query.status }}</p>
+                            <p class="card-text mt-2"><b>Remarks: </b>{{query.remarks }}</p>
+                          </div>
+                        </div>
+                      {% endfor %}
+                      {% else %}
+                      No messages found. Please Send your thoughts.
+                      {% endif %}
+                    </div>
+                    <hr>
+                    <div class="mt-4">
+                      <h4>Your Donations </h4>
+                      {% if donations %}
+                      {% for donation in donations %}
+                        <div class="card mt-2">
+                          <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                              <h5 class="card-title mb-0">{{donation.amount}} cents $</h5>
+                              <small class="text-muted">{{donation.created_at}}</small>
+                            </div>
+                          </div>
+                        </div>
+                      {% endfor %}
+                      {% else %}
+                      <p> No donations yet. Please contribute in our success.</p> 
+                      <a href = "/todo/donate"><button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-success ms-1">Donate</button></a> 
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+{% endblock content %}

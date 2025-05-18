@@ -1,0 +1,46 @@
+{% extends "master.html" %} 
+
+{% block title %}
+About us
+{% endblock title %} 
+
+{%block navbar %} 
+{% include "navbar.html" with first_name=request.user.first_name%} 
+{% endblock %} 
+
+{% block content %}
+<section style="background-color: #eee">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-lg-12 col-xl-12">
+        <div class="card rounded-3">
+          <div class="card-body p-4">
+            <h1 class="mb-4">📝 About Us</h1>
+
+            <p>Welcome to <strong>To-Do</strong> – your simple and powerful to-do list manager.</p>
+
+            <p>Our mission is to help you stay organized, focused, and productive by making it easy to manage your daily tasks.
+                Whether you're a student, professional, or anyone with goals to reach, To-Do offers a clean and intuitive interface
+                to plan your day effectively.</p>
+
+            <h4 class="mt-4">✅ What We Offer</h4>
+            <ul>
+                <li>Create and manage to-do items effortlessly</li>
+                <li>Track your progress with task status updates</li>
+                <li>Edit, update, and remove tasks anytime</li>
+                <li>A user-friendly dashboard to view all your tasks at a glance</li>
+            </ul>
+
+            <h4 class="mt-4">🔐 Your Data, Your Privacy</h4>
+            <p>We value your time and your privacy. All your information is stored securely and never shared.</p>
+
+            <h4 class="mt-4">👤 About the Creator</h4>
+            <p><strong>To-Do</strong> is developed by <strong>Lakshay Yadav</strong>, a passionate developer committed to creating tools
+                that make life a little easier, one task at a time.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}

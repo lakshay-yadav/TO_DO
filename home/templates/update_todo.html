@@ -1,0 +1,52 @@
+{% extends "master.html" %}
+
+{% block navbar %}
+{% include "navbar.html" with first_name=request.user.first_name %}
+{% endblock navbar %}
+
+{% block content %}
+<section style="background-color: #eee;">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col col-lg-11 col-xl-9">
+          <div class="card rounded-3">
+            <div class="card-body p-4">
+  
+              <h4 class="text-center my-3 pb-3">Update To-Do Item</h4>
+
+              {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-primary" role="alert">
+                        {{ message }}
+                      </div>
+                    {% endfor %}
+            {% endif %}
+  
+              <form class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2" method = "POST">
+                {% csrf_token %}
+                <div class="col-12">
+                  <div data-mdb-input-init class="form-outline">
+                    <input type="text" name="title" id = "title" class="form-control" value = "{{ item.title}}" />
+                    <label class="form-label" for="title">Title</label>
+                  </div>
+                </div>
+                <div class="col-12">
+                    <div data-mdb-input-init class="form-outline">
+                      <textarea type="text" name="description" id = "description" class="form-control" />{{ item.description}}</textarea>
+                      <label class="form-label" for="description">Description</label>
+                    </div>
+                </div>
+                <div class="col-12">
+                  <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Update</button>
+                </div>
+              </form>
+              <a href = "/todo/delete_item/{{item.id}}"> <button type="" data-mdb-button-init data-mdb-ripple-init class="btn btn-danger">Delete</button></a>
+              <a href = "/todo/update_status_to_progress/{{item.id}}"><button type="" data-mdb-button-init data-mdb-ripple-init class="btn btn-success ms-1">In Progress</button></a>
+              <a href = "/todo/update_status/{{item.id}}"><button type="" data-mdb-button-init data-mdb-ripple-init class="btn btn-success ms-1">Finished</button></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}

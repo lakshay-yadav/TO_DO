@@ -1,0 +1,77 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block navbar %}
+{% include "navbar.html" with first_name=request.user.first_name %}
+{% endblock navbar %}
+
+{% block content %}
+    <section class="w-100 px-4 py-5" style=" border-radius: .5rem .5rem 0 0;">
+        <div class="row d-flex justify-content-center">
+          <div class="col col-md-9 col-lg-9 col-xl-9">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body p-4">
+                <div id= "message-container">
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-primary" role="alert">
+                        {{ message }}
+                      </div>
+                    {% endfor %}
+            {% endif %}
+                    </div>
+            <div>
+                <div class="d-flex">
+                  <div class="flex-shrink-0 col-3">
+                    <img src="{% static "img/OIP.jpeg" %}"
+                      alt="Generic placeholder image" class="img-fluid" style="width: 250px; border-radius: 10px;">
+                  </div>
+                  <div class="flex-grow-1 ms-3 my-4">
+                    <form method = "POST" class ="form-inline" >
+                        {% csrf_token %}
+                        <div class="row">
+                            <div data-mdb-input-init class="form-outline col-lg-2 mx-4">
+                                <label class="form-label" for="first_name">First name</label>
+                            </div>
+                            <div data-mdb-input-init class="form-outline col-lg-6">
+                                <input type="text" name="first_name" id = "first_name" value = "{{request.user.first_name}}" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div data-mdb-input-init class="form-outline col-lg-2 mx-4">
+                                <label class="form-label" for="last_name">Last name</label>
+                            </div>
+                            <div data-mdb-input-init class="form-outline col-lg-6">
+                                <input type="text" name="last_name" id = "last_name" value = "{{request.user.last_name}}" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div data-mdb-input-init class="form-outline col-lg-2 mx-4">
+                                <label class="form-label" for="email">Email</label>
+                            </div>
+                            <div data-mdb-input-init class="form-outline col-lg-6">
+                                <input type="email" name="email" id = "email" value = "{{request.user.email}}" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div data-mdb-input-init class="form-outline col-lg-2 mx-4">
+                                <label class="form-label" for="user_description">About you</label>
+                            </div>
+                            <div data-mdb-input-init class="form-outline col-lg-6">
+                                <textarea class="form-control" id="user_description" name="user_description" rows="3" placeholder="Enter About yourself" required>{% if  user.user_description%}{{request.user.user_description}}{% endif %}</textarea>
+                            </div>
+                        </div>
+                        <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4 mt-4 mx-4">
+                            Update Profile
+                          </button>
+                    </form>
+                    <a href="/delete_account/{{user.username}}" onclick="return confirm('Are you sure you want to delete your account?');" class="btn btn-danger mx-4">Delete Account</a>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+{% endblock content %}

@@ -1,0 +1,70 @@
+{% extends "master.html" %}
+
+{% block title %}
+Admin Portal - All To-Do
+{% endblock title %}
+
+{% block navbar %}
+{% include "navbar.html" with first_name=request.user.first_name %}
+{% endblock %}
+
+{% block content %}
+    <section class="w-100 px-4 py-5" style=" border-radius: .5rem .5rem 0 0;">
+        <div class="row d-flex justify-content-center">
+          <div class="col col-md-9 col-lg-11 col-xl-11">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body p-4">
+
+                <h1 class="text-center my-3 pb-3">Admin Dashboard</h1>
+                <hr>
+                <div class="container mt-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="mb-0">All TO-DO</h2>
+                    </div>
+                    <div id= "message-container">
+                        {% if messages %}
+                            {% for message in messages %}
+                            <div class="alert alert-primary" role="alert">
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    
+                    <div class="col-md-2 mb-3">
+                        <label for="sortSelect" class="form-label"><strong>Sort by:</strong></label>
+                        <select id="sortSelect" class="form-select" onchange="location = this.value;">
+                            <option value="?sort_by=-date_created" {% if sort_by == '-date_created' %}selected{% endif %}>Latest Items</option>
+                            <option value="?sort_by=date_created" {% if sort_by == 'date_created' %}selected{% endif %}>Oldest Items</option>
+                            <option value="?sort_by=status" {% if sort_by == 'status' %}selected{% endif %}>Finished Items</option>
+                            <option value="?sort_by=-status" {% if sort_by == '-status' %}selected{% endif %}>In Progress Items</option>
+                        </select>
+                     </div>
+
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for todo in allTodos %}
+                                <tr>
+                                    <td>@{{ todo.user.username }}</td>
+                                    <td>{{ todo.title }}</td>
+                                    <td>{{ todo.description }}</td>
+                                    <td>{{ todo.status }}</td>
+                                </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+{% endblock content %}

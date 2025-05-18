@@ -1,0 +1,67 @@
+{% extends "master.html" %}
+
+{% block title %}
+Admin Portal - All users
+{% endblock title %}
+
+{% block navbar %}
+{% include "navbar.html" with first_name=request.user.first_name %}
+{% endblock %}
+
+{% block content %}
+    <section class="w-100 px-4 py-5" style=" border-radius: .5rem .5rem 0 0;">
+        <div class="row d-flex justify-content-center">
+          <div class="col col-md-9 col-lg-11 col-xl-11">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body p-4">
+                <div id= "message-container">
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-primary" role="alert">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <h1 class="text-center my-3 pb-3">Admin Dashboard</h1>
+                <hr>
+                
+                <div class="container mt-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="mb-0">All Users</h2>
+                    </div>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>User Role</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for User in allUsers %}
+                        
+                            <tr>
+                               <td> <a href="" class="text-decoration-none text-dark"> @{{ User.username }} </a></td>
+                                <td>{{ User.email }}</td>
+                                <td>{{ User.first_name }}</td>
+                                <td>{{ User.last_name }}</td>
+                                <td>{% if User.isAdmin %}Admin {% else %}General User{% endif %}</td>
+                        
+                                <td> <a href = "/admin-portal/delete_account/{{User.id}}?next={{ request.path }}" onclick="return confirm('Are you sure you want to delete your account?');"> <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-danger">Delete</button></a></td>
+                            </tr>
+                        
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+{% endblock content %}

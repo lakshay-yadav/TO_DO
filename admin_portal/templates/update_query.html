@@ -1,0 +1,87 @@
+{% extends "master.html" %}
+
+{% block title %}
+Admin Portal - All query
+{% endblock title %}
+
+{% block navbar %}
+{% include "navbar.html" with first_name=request.user.first_name %}
+{% endblock %}
+
+{% block content %}
+    <section class="w-100 px-4 py-5" style=" border-radius: .5rem .5rem 0 0;">
+        <div class="row d-flex justify-content-center">
+          <div class="col col-md-9 col-lg-11 col-xl-11">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body p-4">
+                <div id= "message-container">
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-primary" role="alert">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <h1 class="text-center my-3 pb-3">Admin Dashboard</h1>
+                <h4 class = "mb-4"> Update query </h4>
+                <form class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2" method = "POST">
+                    {% csrf_token %}
+                        
+                        <div class="col-md-6 mb-2">
+                        <div data-mdb-input-init class="form-outline">
+                            <input type="text" name="username" id = "username" class="form-control" disabled value = "{{query.user.username}}"/>
+                            <label class="form-label" for="username">Username</label>
+                        </div>
+                        </div>
+
+                        <div class="col-md-6 mb-2">
+                        <div data-mdb-input-init class="form-outline">
+                            <select class="form-select" id="status" name="status">
+                                <option value="In Progress" {% if query.status == "In Progress" %}selected{% endif %}>In Progress</option>
+                                <option value="Hold" {% if query.status == "Hold" %}selected{% endif %}>Hold</option>
+                                <option value="Resolved" {% if query.status == "Resolved" %}selected{% endif %}>Resolved</option>
+                            </select>
+                            <label for="status" class="form-label">Select Status</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 mb-2">
+                    <div data-mdb-input-init class="form-outline">
+                        <input type="text" name="title" id = "title" class="form-control" value = "{{ query.title}}" disabled/>
+                        <label class="form-label" for="title">Title</label>
+                    </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 mb-2">
+                    <div data-mdb-input-init class="form-outline">
+                        <input type="text" name="created_at" id = "created_at" class="form-control" value = "{{ query.created_at}}" disabled />
+                        <label class="form-label" for="created_at">Created at</label>
+                    </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div data-mdb-input-init class="form-outline">
+                        <textarea type="text" name="description" id = "description" class="form-control" disabled />{{ query.description}} </textarea>
+                        <label class="form-label" for="description">Description</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div data-mdb-input-init class="form-outline">
+                        <textarea type="text" name="remarks" id = "remarks" class="form-control" />{{ query.remarks}}</textarea>
+                        <label class="form-label" for="remarks">Remarks</label>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                    <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Update</button>
+                    </div>
+              </form>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+{% endblock content %}

@@ -1,0 +1,172 @@
+{% extends "master.html" %}
+
+{% block title %}
+Admin Portal
+{% endblock title %}
+
+{% block navbar %}
+{% include "navbar.html" with first_name=request.user.first_name %}
+{% endblock %}
+
+{% block content %}
+    <section class="w-100 px-4 py-5" style=" border-radius: .5rem .5rem 0 0;">
+        <div class="row d-flex justify-content-center">
+          <div class="col col-md-9 col-lg-11 col-xl-11">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body p-4">
+
+                <h1 class="text-center my-3 pb-3">Admin Dashboard</h1>
+
+                <div id= "message-container">
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-primary" role="alert">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+                <form method="GET" class="w-100 mb-3">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap">
+                        {% if username %}
+                            <div class="me-auto mb-2">
+                                <h5 class="mb-0">Search for "{{ username }}"</h5>
+                            </div>
+                            {% else %}
+                            <div></div>
+                        {% endif %}
+                        <div class="d-flex align-items-center flex-nowrap" style="gap: 10px;">
+                            <input type="text" name="q" class="form-control" placeholder="Search for username..." style="max-width: 250px;">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                            <a href="/admin-portal" class="btn btn-secondary text-nowrap">Clear Search</a>
+                        </div>
+                    </div>
+                </form>
+
+
+                <hr>
+                
+                <div class="container mt-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="mb-0">All Users</h2>
+                        <a href="/admin-portal/all-users" class="btn btn-primary">See All Users</a>
+                    </div>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>User Role</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for User in allUsers %}
+                        
+                            <tr>
+                               <td> <a href="" class="text-decoration-none text-dark"> @{{ User.username }} </a></td>
+                                <td>{{ User.email }}</td>
+                                <td>{{ User.first_name }}</td>
+                                <td>{{ User.last_name }}</td>
+                                <td>{% if User.isAdmin %}Admin {% else %}General User{% endif %}</td>
+                                <td> <a href = "/admin-portal/delete_account/{{User.id}}?next={{ request.path }}" onclick="return confirm('Are you sure you want to delete your account?');"> <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-danger">Delete</button></a></td>
+                            </tr>
+                        
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <hr class="my-5">
+                <div class="container mt-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="mb-0">All Donations</h2>
+                        <a href="/admin-portal/all-donations" class="btn btn-primary">See All Donations</a>
+                    </div>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for donation in allDonations %}
+                            <tr>
+                                <td>@{{ donation.user.username }}</td>
+                                <td>{{ donation.amount }}</td>
+                                <td>{{ donation.created_at }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <hr class="my-5">
+                <div class="container mt-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="mb-0">All Queries</h2>
+                        <a href="/admin-portal/all-query" class="btn btn-primary">See All Queries</a>
+                    </div>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Submit date</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for Query in allQuery %}
+                            {% if Query.title %}
+                                <tr>
+                                    <td>@{{ Query.user.username }}</td>
+                                    <td>{{ Query.title }}</td>
+                                    <td>{{ Query.description }}</td>
+                                    <td>{{ Query.created_at }}</td>
+                                    <td> <a href = "/admin-portal/update-query/{{Query.id}}"> <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-success">Update</button></a></td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <hr class="my-5">
+                <div class="container mt-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="mb-0">All TO-DO</h2>
+                        <a href="admin-portal/all-todos-items" class="btn btn-primary">See All TO-DO</a>
+                    </div>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for todo in allTodos %}
+                                <tr>
+                                    <td>@{{ todo.user.username }}</td>
+                                    <td>{{ todo.title }}</td>
+                                    <td>{{ todo.description }}</td>
+                                    <td>{{ todo.status }}</td>
+                                </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+{% endblock content %}
